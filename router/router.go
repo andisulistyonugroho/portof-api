@@ -19,7 +19,7 @@ func SetupRoutes(r *fiber.App, db *sql.DB) {
 	r.Get("/pages", cdh.ListPage)
 
 	// admin
-	// mabes := r.Group("/mabes")
-	// mabesPage := mabes.Group("/pages")
-	// mabesPage.Post("/", cdh.ListPage)
+	mabes := r.Group("/mabes")
+	mabesPage := mabes.Group("/pages")
+	mabesPage.Post("/", cdh.CreatePage)
 }

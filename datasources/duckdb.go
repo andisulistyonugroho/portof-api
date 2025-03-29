@@ -11,7 +11,7 @@ func Duckconnect() *sql.DB {
 
 	// fmt.Println("BEGINING DS: ", DB)
 
-	DB, err := sql.Open("duckdb", "../portof.ddb?access_mode=read_only")
+	DB, err := sql.Open("duckdb", "../portof.ddb")
 
 	if err != nil {
 		log.Fatal("Failed to connect duckdb database..." + err.Error())
