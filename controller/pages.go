@@ -26,7 +26,9 @@ func (cdh *DuckHandler) ListPage(c fiber.Ctx) error {
 		p = append(p, each)
 	}
 
-	return c.JSON(p)
+	return c.JSON(fiber.Map{
+		"data": p,
+	})
 }
 
 func (cdh *DuckHandler) CreatePage(c fiber.Ctx) error {
@@ -65,5 +67,7 @@ func (cdh *DuckHandler) CreatePage(c fiber.Ctx) error {
 		p = append(p, each)
 	}
 
-	return c.JSON(p)
+	return c.JSON(fiber.Map{
+		"data": p,
+	})
 }
