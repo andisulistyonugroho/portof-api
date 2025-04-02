@@ -35,48 +35,9 @@ func (cdh *DuckHandler) ListPortfolio(c fiber.Ctx) error {
 }
 
 func (cdh *DuckHandler) ListBlog(c fiber.Ctx) error {
-	// page_id 1 = portfolio
+	// page_id 2 = portfolio
 	rows, err := cdh.DB.Query(`SELECT id,title,short_desc,the_body,display_picture_url,is_active,
 	created_at FROM post WHERE is_active = true AND page_id = 2`)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	var p []model.Post
-
-	for rows.Next() {
-		each := model.Post{}
-		err := rows.Scan(&each.ID, &each.PageId, &each.Title, &each.ShortDesc, &each.TheBody,
-			&each.DisplayPictureUrl, &each.IsActive, &each.CreatedAt)
-		if err != nil {
-			return err
-		}
-
-		p = append(p, each)
-	}
-
-	return c.JSON(fiber.Map{
-		"data": p,
-	})
-}
-
-func (cdh *DuckHandler) ListPost(c fiber.Ctx) error {
-	type PostRequest struct {
-		PageId int `json:"page_id"`
-	}
-
-	req := new(PostRequest)
-
-	if err := c.Bind().JSON(req); err != nil {
-		fmt.Println(err)
-		return fiber.ErrBadRequest
-	}
-
-	query := `SELECT id, title, short_desc, the_body, display_picture_url, is_active, created_at
-	FROM post WHERE page_id = ? ORDER BY is_active DESC, id ASC`
-
-	rows, err := cdh.DB.Query(query, req.PageId)
 	if err != nil {
 		return err
 	}

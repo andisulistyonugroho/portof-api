@@ -8,7 +8,7 @@ import (
 )
 
 func (cdh *DuckHandler) ListPage(c fiber.Ctx) error {
-	rows, err := cdh.DB.Query(`SELECT id,title,parent_id FROM pages WHERE is_active = true`)
+	rows, err := cdh.DB.Query(`SELECT id,title,parent_id,is_active,created_at,edited_at FROM pages WHERE is_active = true`)
 	if err != nil {
 		return err
 	}
@@ -18,7 +18,7 @@ func (cdh *DuckHandler) ListPage(c fiber.Ctx) error {
 
 	for rows.Next() {
 		each := model.Page{}
-		err := rows.Scan(&each.ID, &each.Title, &each.ParentId)
+		err := rows.Scan(&each.ID, &each.Title, &each.ParentId, &each.IsActive, &each.CreatedAt, &each.EditedAt)
 		if err != nil {
 			return err
 		}
