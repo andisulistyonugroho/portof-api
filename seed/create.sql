@@ -31,6 +31,9 @@ CREATE TABLE pages (
     edited_at TIMESTAMP
 );
 
+INSERT INTO pages (title) VALUES ('Portfolio');
+INSERT INTO pages (title) VALUES ('Blog');
+
 CREATE SEQUENCE id_category START 1;
 CREATE TABLE categories (
     id INTEGER PRIMARY KEY DEFAULT nextval('id_category'),
@@ -46,6 +49,7 @@ CREATE SEQUENCE id_post START 1;
 CREATE TABLE posts (
     id INTEGER PRIMARY KEY DEFAULT nextval('id_post'),
     page_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
     title VARCHAR NOT NULL,
     short_desc VARCHAR,
     the_body VARCHAR,
