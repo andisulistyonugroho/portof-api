@@ -3,8 +3,9 @@ package router
 import (
 	"database/sql"
 	"portof-api/controller"
+	"portof-api/middleware"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 )
 
 func SetupRoutes(r *fiber.App, db *sql.DB) {
@@ -20,6 +21,7 @@ func SetupRoutes(r *fiber.App, db *sql.DB) {
 
 	// admin
 	mabes := r.Group("/mabes")
+	mabes.Use(middleware.JWTProtected)
 	mabesPage := mabes.Group("/pages")
 	mabesPage.Post("/", cdh.CreatePage)
 }

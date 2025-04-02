@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"portof-api/model"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (cdh *DuckHandler) ListPortfolio(c fiber.Ctx) error {
+func (cdh *DuckHandler) ListPortfolio(c *fiber.Ctx) error {
 	// page_id 1 = portfolio
 	rows, err := cdh.DB.Query(`SELECT id,title,short_desc,the_body,display_picture_url,is_active,
 	created_at FROM post WHERE is_active = true AND page_id = 1`)
@@ -34,7 +34,7 @@ func (cdh *DuckHandler) ListPortfolio(c fiber.Ctx) error {
 	})
 }
 
-func (cdh *DuckHandler) ListBlog(c fiber.Ctx) error {
+func (cdh *DuckHandler) ListBlog(c *fiber.Ctx) error {
 	// page_id 2 = portfolio
 	rows, err := cdh.DB.Query(`SELECT id,title,short_desc,the_body,display_picture_url,is_active,
 	created_at FROM post WHERE is_active = true AND page_id = 2`)
@@ -61,7 +61,7 @@ func (cdh *DuckHandler) ListBlog(c fiber.Ctx) error {
 	})
 }
 
-func (cdh *DuckHandler) CreatePost(c fiber.Ctx) error {
+func (cdh *DuckHandler) CreatePost(c *fiber.Ctx) error {
 	type Request struct {
 		Title             string `json:"title"`
 		CategoryId        int    `json:"category_id"`
@@ -73,7 +73,7 @@ func (cdh *DuckHandler) CreatePost(c fiber.Ctx) error {
 
 	req := new(Request)
 
-	if err := c.Bind().JSON(req); err != nil {
+	if err := c.BodyParser(req); err != nil {
 		return fiber.ErrBadRequest
 	}
 

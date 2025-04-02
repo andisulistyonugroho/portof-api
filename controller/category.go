@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"portof-api/model"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (cdh *DuckHandler) ListCategory(c fiber.Ctx) error {
+func (cdh *DuckHandler) ListCategory(c *fiber.Ctx) error {
 	rows, err := cdh.DB.Query(`SELECT id,page_id,title,parent_id FROM categories WHERE is_active = true`)
 	if err != nil {
 		return err
@@ -31,7 +31,7 @@ func (cdh *DuckHandler) ListCategory(c fiber.Ctx) error {
 	})
 }
 
-func (cdh *DuckHandler) CreateCategory(c fiber.Ctx) error {
+func (cdh *DuckHandler) CreateCategory(c *fiber.Ctx) error {
 	type TheRequest struct {
 		Title    string `json:"title"`
 		PageId   int    `json:"page_id"`
@@ -40,7 +40,7 @@ func (cdh *DuckHandler) CreateCategory(c fiber.Ctx) error {
 
 	req := new(TheRequest)
 
-	if err := c.Bind().JSON(req); err != nil {
+	if err := c.BodyParser(req); err != nil {
 		return fiber.ErrBadRequest
 	}
 

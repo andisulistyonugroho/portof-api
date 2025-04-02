@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"portof-api/model"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (cdh *DuckHandler) ListPage(c fiber.Ctx) error {
+func (cdh *DuckHandler) ListPage(c *fiber.Ctx) error {
 	rows, err := cdh.DB.Query(`SELECT id,title,parent_id,is_active,created_at,edited_at FROM pages WHERE is_active = true`)
 	if err != nil {
 		return err
@@ -31,7 +31,7 @@ func (cdh *DuckHandler) ListPage(c fiber.Ctx) error {
 	})
 }
 
-func (cdh *DuckHandler) CreatePage(c fiber.Ctx) error {
+func (cdh *DuckHandler) CreatePage(c *fiber.Ctx) error {
 	type PageRequest struct {
 		Title    string `json:"title"`
 		ParentId int    `json:"parent_id"`
@@ -39,7 +39,7 @@ func (cdh *DuckHandler) CreatePage(c fiber.Ctx) error {
 
 	req := new(PageRequest)
 
-	if err := c.Bind().JSON(req); err != nil {
+	if err := c.BodyParser(req); err != nil {
 		return fiber.ErrBadRequest
 	}
 

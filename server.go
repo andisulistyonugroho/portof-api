@@ -3,22 +3,30 @@ package main
 import (
 	"portof-api/datasources"
 	"portof-api/router"
+	"strings"
 
-	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/middleware/cors"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
 	duck := datasources.Duckconnect()
-	
+
 	fib := fiber.New()
 	fib.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Authorization"},
-		AllowMethods: []string{"POST", "OPTIONS"},
+		AllowOrigins: "*",
+		AllowHeaders: strings.Join([]string{"Origin", "Content-Type", "Accept", "Authorization"}, ","),
+		AllowMethods: strings.Join([]string{
+			fiber.MethodGet,
+			fiber.MethodPost,
+			fiber.MethodHead,
+			fiber.MethodPut,
+			fiber.MethodDelete,
+			fiber.MethodPatch,
+		}, ","),
 	}))
 
-	fib.Get("/", func(c fiber.Ctx) error {
+	fib.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("hello world")
 	})
 
@@ -26,4 +34,3 @@ func main() {
 
 	fib.Listen(":3000")
 }
-
